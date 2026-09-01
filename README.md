@@ -1,23 +1,23 @@
 # nvim-setup
 
-Min portabla Neovim-setup med Cyberdream.
+Portable Neovim setup with Cyberdream.
 
-## Installera på Debian / Ubuntu / Pop!_OS
+## Install on Debian / Ubuntu / Pop!_OS
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/hugomossberg/nvim-setup/main/install.sh | bash
 ```
 
-Scriptet:
+The script:
 
-- installerar beroenden
-- identifierar x86_64 eller arm64
-- installerar senaste Neovim under `/opt`
-- gör `vi`, `vim` och `nvim` till Neovim
-- installerar `~/.config/nvim/init.lua`
-- bootstrappar `lazy.nvim`
-- installerar plugins
-- försöker installera vanliga Treesitter-parsers
+- installs required dependencies
+- detects x86_64 or arm64
+- installs the latest Neovim under `/opt`
+- makes `vi`, `vim`, and `nvim` launch Neovim
+- installs `~/.config/nvim/init.lua`
+- bootstraps `lazy.nvim`
+- installs plugins
+- attempts to install common Treesitter parsers
 
 ## Plugins
 
@@ -30,14 +30,14 @@ Scriptet:
 
 ## Shortcuts
 
-- `Space f f` — hitta filer
-- `Space f g` — sök text
-- `Space f b` — öppna buffers
+- `Space f f` — find files
+- `Space f g` — search text
+- `Space f b` — open buffers
 
-## Transparens
+## Transparency
 
-Neovim-configen använder transparent bakgrund. Själva graden av transparens styrs av terminalprogrammet på datorn där terminalen visas.
+The Neovim config uses a transparent background. The actual opacity level is controlled by the terminal emulator on the machine where the terminal is displayed.
 
-## Viktigt
+## Important
 
-Lägg aldrig API-nycklar, lösenord, tokens eller privata SSH-nycklar i detta repo.
+Never put API keys, passwords, tokens, or private SSH keys in this repository.

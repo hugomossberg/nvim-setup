@@ -30,6 +30,7 @@ The script:
 
 ## Shortcuts
 
+- `jk` — leave Insert mode and return to Normal mode
 - `Space f f` — find files
 - `Space f g` — search text
 - `Space f b` — open buffers

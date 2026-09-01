@@ -18,7 +18,6 @@ The script:
 - bootstraps `lazy.nvim`
 - installs plugins
 - attempts to install common Treesitter parsers
-- maps `Caps Lock` to `Escape` on supported desktop sessions
 
 ## Plugins
 
@@ -31,14 +30,10 @@ The script:
 
 ## Shortcuts
 
-- `Caps Lock` — Escape / return to Normal mode
+- `jj` — leave Insert mode and return to Normal mode
 - `Space f f` — find files
 - `Space f g` — search text
 - `Space f b` — open buffers
-
-## Caps Lock mapping
-
-On GNOME/Pop!_OS desktop sessions, the installer maps `Caps Lock` to `Escape`. This replaces the normal Caps Lock behavior. On headless servers the keyboard remap is skipped automatically.
 
 ## Transparency
 

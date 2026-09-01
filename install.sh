@@ -20,7 +20,7 @@ else
     fi
 fi
 
-say "[1/7] Installing dependencies"
+say "[1/6] Installing dependencies"
 
 if command -v apt-get >/dev/null 2>&1; then
     $SUDO apt-get update
@@ -31,7 +31,7 @@ else
     exit 1
 fi
 
-say "[2/7] Installing latest Neovim"
+say "[2/6] Installing latest Neovim"
 
 ARCH="$(uname -m)"
 
@@ -65,7 +65,7 @@ $SUDO ln -sf "/opt/${NVIM_DIR}/bin/nvim" /usr/local/bin/nvim
 $SUDO ln -sf "/opt/${NVIM_DIR}/bin/nvim" /usr/local/bin/vi
 $SUDO ln -sf "/opt/${NVIM_DIR}/bin/nvim" /usr/local/bin/vim
 
-say "[3/7] Installing Neovim configuration"
+say "[3/6] Installing Neovim configuration"
 
 CONFIG_DIR="${HOME}/.config/nvim"
 mkdir -p "$CONFIG_DIR"
@@ -78,33 +78,20 @@ fi
 
 curl -fsSL "${RAW_BASE}/init.lua" -o "${CONFIG_DIR}/init.lua"
 
-say "[4/7] Installing plugins"
+say "[4/6] Installing plugins"
 
 nvim --headless "+Lazy! sync" +qa || {
     echo "Lazy sync failed. Start 'vi' once to see the details."
     exit 1
 }
 
-say "[5/7] Installing common Treesitter parsers"
+say "[5/6] Installing common Treesitter parsers"
 
 nvim --headless \
     "+TSInstallSync python bash lua json yaml markdown" \
     +qa >/dev/null 2>&1 || true
 
-say "[6/7] Mapping Caps Lock to Escape"
-
-# GNOME/Pop!_OS desktop sessions. On headless servers this is skipped safely.
-if command -v gsettings >/dev/null 2>&1; then
-    if gsettings set org.gnome.desktop.input-sources xkb-options "['caps:escape']" >/dev/null 2>&1; then
-        echo "Caps Lock now acts as Escape."
-    else
-        echo "Could not change Caps Lock in this session; skipping keyboard remap."
-    fi
-else
-    echo "No desktop gsettings found; skipping keyboard remap."
-fi
-
-say "[7/7] Done"
+say "[6/6] Done"
 
 printf '\nNeovim: '
 nvim --version | head -1
@@ -117,7 +104,7 @@ Available commands:
   nvim file.py
 
 Shortcuts:
-  Caps Lock   Escape / return to Normal mode
+  jj          return to Normal mode from Insert mode
   Space f f   find files
   Space f g   search text
   Space f b   buffers

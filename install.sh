@@ -20,7 +20,7 @@ else
     fi
 fi
 
-say "[1/6] Installing dependencies"
+say "[1/7] Installing dependencies"
 
 if command -v apt-get >/dev/null 2>&1; then
     $SUDO apt-get update
@@ -31,18 +31,18 @@ else
     exit 1
 fi
 
-say "[2/6] Installing latest Neovim"
-
 ARCH="$(uname -m)"
 
 case "$ARCH" in
     x86_64|amd64)
         NVIM_ASSET="nvim-linux-x86_64.tar.gz"
         NVIM_DIR="nvim-linux-x86_64"
+        FZF_ARCH="amd64"
         ;;
     aarch64|arm64)
         NVIM_ASSET="nvim-linux-arm64.tar.gz"
         NVIM_DIR="nvim-linux-arm64"
+        FZF_ARCH="arm64"
         ;;
     *)
         echo "Unsupported architecture: $ARCH"
@@ -52,6 +52,8 @@ esac
 
 TMPDIR="$(mktemp -d)"
 trap 'rm -rf "$TMPDIR"' EXIT
+
+say "[2/7] Installing latest Neovim"
 
 curl -fL \
     "https://github.com/neovim/neovim/releases/latest/download/${NVIM_ASSET}" \
@@ -65,7 +67,27 @@ $SUDO ln -sf "/opt/${NVIM_DIR}/bin/nvim" /usr/local/bin/nvim
 $SUDO ln -sf "/opt/${NVIM_DIR}/bin/nvim" /usr/local/bin/vi
 $SUDO ln -sf "/opt/${NVIM_DIR}/bin/nvim" /usr/local/bin/vim
 
-say "[3/6] Installing Neovim configuration"
+say "[3/7] Installing latest fzf"
+
+FZF_VERSION="$(curl -fsSL https://api.github.com/repos/junegunn/fzf/releases/latest \
+    | sed -n 's/.*"tag_name": *"v\([^"]*\)".*/\1/p' \
+    | head -n1)"
+
+if [ -z "$FZF_VERSION" ]; then
+    echo "Could not determine latest fzf version."
+    exit 1
+fi
+
+FZF_ASSET="fzf-${FZF_VERSION}-linux_${FZF_ARCH}.tar.gz"
+
+curl -fL \
+    "https://github.com/junegunn/fzf/releases/download/v${FZF_VERSION}/${FZF_ASSET}" \
+    -o "${TMPDIR}/${FZF_ASSET}"
+
+$SUDO tar -C /usr/local/bin -xzf "${TMPDIR}/${FZF_ASSET}" fzf
+$SUDO chmod 0755 /usr/local/bin/fzf
+
+say "[4/7] Installing Neovim configuration"
 
 CONFIG_DIR="${HOME}/.config/nvim"
 mkdir -p "$CONFIG_DIR"
@@ -78,23 +100,25 @@ fi
 
 curl -fsSL "${RAW_BASE}/init.lua" -o "${CONFIG_DIR}/init.lua"
 
-say "[4/6] Installing plugins"
+say "[5/7] Installing plugins"
 
 nvim --headless "+Lazy! sync" +qa || {
     echo "Lazy sync failed. Start 'vi' once to see the details."
     exit 1
 }
 
-say "[5/6] Installing common Treesitter parsers"
+say "[6/7] Installing common Treesitter parsers"
 
 nvim --headless \
     "+TSInstallSync python bash lua json yaml markdown" \
     +qa >/dev/null 2>&1 || true
 
-say "[6/6] Done"
+say "[7/7] Done"
 
 printf '\nNeovim: '
 nvim --version | head -1
+printf 'fzf: '
+fzf --version | head -1
 
 cat <<'EOF'
 

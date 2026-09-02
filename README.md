@@ -13,6 +13,7 @@ The script:
 - installs required dependencies
 - detects x86_64 or arm64
 - installs the latest Neovim under `/opt`
+- installs the latest `fzf` release under `/usr/local/bin`
 - makes `vi`, `vim`, and `nvim` launch Neovim
 - installs `~/.config/nvim/init.lua`
 - bootstraps `lazy.nvim`
